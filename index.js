@@ -52,11 +52,15 @@ async function sendEmail(host, port, secure, user, password, name, from, to, sub
             }
         }
 
-        console.info("Message sent: %s", info.messageId);
+        if (info) {
+            console.log("Message sent: %s", info.messageId);
+            console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        } else {
+            console.error("Message not sent");
+        }
         // Message sent ID
     } catch (error) {
         console.error(error);
-        console.info(info);
     }
 }
 
