@@ -1,0 +1,12 @@
+{
+    "name": "sendMailer SMTP",
+    "description": "Send mails through SMTP you can use the frontend form or the API :)",
+    "repository": "https://github.com/alanescarcha/sendmailer-smtp",
+    "keywords": [
+        "node",
+        "express",
+        "static",
+        "smtp",
+        "api"
+    ]
+}
