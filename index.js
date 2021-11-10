@@ -73,15 +73,18 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.render('index.html');
 });
 app.get('/api/v1/', (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.send('POST requests only!');
 });
 
 app.post('/api/v1', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     if (req.is('application/json')) {
         const response = await req.body;
         try {
@@ -128,6 +131,7 @@ app.post('/api/v1', async (req, res) => {
         }
     } else {
         res.status(400).send('Invalid content type, only JSON content type!');
+        console.error("Message not sent, Invalid content type");
     }
 });
 
@@ -135,4 +139,3 @@ app.post('/api/v1', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
-
