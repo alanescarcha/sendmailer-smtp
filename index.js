@@ -7,6 +7,7 @@ let errorResponse = {
     "response": "Error processing the request",
     "responseCode": "400"
 }
+let errorExit = false;
 
 async function sendEmail(host, port, secure, user, password, name, from, to, subject, typemsg, message) {
     try {
@@ -55,10 +56,10 @@ async function sendEmail(host, port, secure, user, password, name, from, to, sub
         if (info) {
             console.log("Message sent: %s", info.messageId);
             console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-            res.send('Email sent successfully!');
+            errorExit = false;
         } else {
             console.error("Message not sent");
-            res.send('Error! Message not sent');
+            errorExit = true;
         }
         // Message sent ID
     } catch (error) {
@@ -96,6 +97,11 @@ app.post('/api/v1', async (req, res) => {
             response.typeMSG,
             response.message
         );
+        if(errorExit){
+            res.status(400).send(errorResponse);
+        }else{
+            res.status(200).send('Email sent successfully!');
+        }
     } catch (error) {
         if (errorResponse.responseCode == 534) {
             res.status(400).send(`
