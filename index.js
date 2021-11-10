@@ -9,51 +9,55 @@ let errorResponse = {
 }
 
 async function sendEmail(host, port, secure, user, password, name, from, to, subject, typemsg, message) {
+    try {
+        if (secure == 'ssl') {
+            secure = true;
+        } else {
+            secure = false;
+        }
 
-    if (secure == 'ssl') {
-        secure = true;
-    } else {
-        secure = false;
+        let transporter = await nodemailer.createTransport({
+            host: host,
+            port: port, //true for 465, false for other ports
+            secure: secure,
+            auth: {
+                user: user,
+                pass: password,
+            }
+        });
+
+        if (typemsg == 'text') {
+            try {
+                var info = await transporter.sendMail({
+                    from: `"${name}" <${from}>`, // sender address
+                    to: to, // list of receivers
+                    subject: subject, // Subject line
+                    text: message // plain text body
+                });
+            } catch (error) {
+                console.error(error);
+                errorResponse = error;
+            }
+        } else if (typemsg == 'html') {
+            try {
+                var info = await transporter.sendMail({
+                    from: `"${name}" <${from}>`, // sender address
+                    to: to, // list of receivers
+                    subject: subject, // Subject line
+                    html: message // html body
+                });
+            } catch (error) {
+                console.error(error);
+                errorResponse = error;
+            }
+        }
+
+        console.info("Message sent: %s", info.messageId);
+        // Message sent ID
+    } catch (error) {
+        console.error(error);
+        console.info(info);
     }
-
-    let transporter = await nodemailer.createTransport({
-        host: host,
-        port: port, //true for 465, false for other ports
-        secure: secure,
-        auth: {
-            user: user,
-            pass: password,
-        }
-    });
-
-    if (typemsg == 'text') {
-        try {
-            var info = await transporter.sendMail({
-                from: `"${name}" <${from}>`, // sender address
-                to: to, // list of receivers
-                subject: subject, // Subject line
-                text: message // plain text body
-            });
-        } catch (error) {
-            console.error(error);
-            errorResponse = error;
-        }
-    } else if (typemsg == 'html') {
-        try {
-            var info = await transporter.sendMail({
-                from: `"${name}" <${from}>`, // sender address
-                to: to, // list of receivers
-                subject: subject, // Subject line
-                html: message // html body
-            });
-        } catch (error) {
-            console.error(error);
-            errorResponse = error;
-        }
-    }
-
-    console.info("Message sent: %s", info.messageId);
-    // Message sent ID
 }
 
 app.use(express.static(__dirname + '/public'));
