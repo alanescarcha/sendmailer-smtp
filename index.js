@@ -1,7 +1,11 @@
 const express = require('express');
+const cors = require('cors')
 const nodemailer = require('nodemailer');
 const app = express();
 const port = process.env.PORT || 3000;
+const corsOptions = {
+    origin: '*',
+}
 let errorResponse = {
     "code": "400",
     "response": "Error processing the request",
@@ -70,15 +74,16 @@ async function sendEmail(host, port, secure, user, password, name, from, to, sub
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.options('*', cors())
 
-app.get('/', (req, res) => {
+app.get('/', cors(), (req, res) => {
     res.render('index.html');
 });
-app.get('/api/v1/', (req, res) => {
+app.get('/api/v1/', cors(), (req, res) => {
     res.send('POST requests only!');
 });
 
-app.post('/api/v1', async (req, res) => {
+app.post('/api/v1', cors(), async (req, res) => {
     if (req.is('application/json')) {
         const response = await req.body;
         try {
