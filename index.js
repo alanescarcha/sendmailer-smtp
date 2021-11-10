@@ -70,10 +70,6 @@ async function sendEmail(host, port, secure, user, password, name, from, to, sub
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use((req, res)=>{
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-});
 
 app.get('/', (req, res) => {
     res.render('index.html');
