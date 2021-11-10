@@ -4,7 +4,7 @@
   "description": "envia mails smtp desde esta API gratis",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Alan Escarcha",
   "license": "ISC",
