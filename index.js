@@ -57,6 +57,7 @@ async function sendEmail(host, port, secure, user, password, name, from, to, sub
             console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
         } else {
             console.error("Message not sent");
+            throw new Error('Message not sent!')
         }
         // Message sent ID
     } catch (error) {
