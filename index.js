@@ -82,29 +82,30 @@ app.get('/api/v1/', (req, res) => {
 
 app.post('/api/v1', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
-    const response = await req.body;
-    try {
-        await sendEmail(
-            response.host,
-            response.port,
-            response.secure,
-            response.user,
-            response.password,
-            response.name,
-            response.from,
-            response.to,
-            response.subject,
-            response.typeMSG,
-            response.message
-        );
-        if(errorExit){
-            res.status(400).send(errorResponse);
-        }else{
-            res.status(200).send('Email sent successfully!');
-        }
-    } catch (error) {
-        if (errorResponse.responseCode == 534) {
-            res.status(400).send(`
+    if (req.is('application/json')) {
+        const response = await req.body;
+        try {
+            await sendEmail(
+                response.host,
+                response.port,
+                response.secure,
+                response.user,
+                response.password,
+                response.name,
+                response.from,
+                response.to,
+                response.subject,
+                response.typeMSG,
+                response.message
+            );
+            if (errorExit) {
+                res.status(400).send(errorResponse);
+            } else {
+                res.status(200).send('Email sent successfully!');
+            }
+        } catch (error) {
+            if (errorResponse.responseCode == 534) {
+                res.status(400).send(`
             Error sending the mail:
             Code: ${errorResponse.code}
             Response: ${errorResponse.response || errorResponse}
@@ -114,8 +115,8 @@ app.post('/api/v1', async (req, res) => {
     
             Check the required fields or contact the administrator (github.com/alanescarcha).
             `);
-        }
-        res.status(400).send(`
+            }
+            res.status(400).send(`
         Error sending the mail:
         Code: ${errorResponse.code || 'None'}
         Response: ${errorResponse.response || errorResponse}
@@ -123,7 +124,10 @@ app.post('/api/v1', async (req, res) => {
 
         Check the required fields or contact the administrator (github.com/alanescarcha).
         `);
-        console.error(`Error app.post: ${error}`);
+            console.error(`Error app.post: ${error}`);
+        }
+    } else {
+        res.status(400).send('Invalid content type, only JSON content type!');
     }
 });
 
