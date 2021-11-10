@@ -55,9 +55,10 @@ async function sendEmail(host, port, secure, user, password, name, from, to, sub
         if (info) {
             console.log("Message sent: %s", info.messageId);
             console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+            res.send('Email sent successfully!');
         } else {
             console.error("Message not sent");
-            throw new Error('Message not sent!')
+            res.send('Error! Message not sent');
         }
         // Message sent ID
     } catch (error) {
@@ -95,7 +96,6 @@ app.post('/api/v1', async (req, res) => {
             response.typeMSG,
             response.message
         );
-        res.send('Email sent successfully!');
     } catch (error) {
         if (errorResponse.responseCode == 534) {
             res.status(400).send(`
