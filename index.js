@@ -90,6 +90,7 @@ app.post('/api/v1', async (req, res) => {
             response.typeMSG,
             response.message
         );
+        res.send('Email sent successfully!');
     } catch (error) {
         if (errorResponse.responseCode == 534) {
             res.status(400).send(`
@@ -113,7 +114,6 @@ app.post('/api/v1', async (req, res) => {
         `);
         console.error(`Error app.post: ${error}`);
     }
-    res.send('Email sent successfully!');
 });
 
 
