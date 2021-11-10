@@ -61,13 +61,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
     res.render('index.html');
 });
 app.get('/api/v1/', (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
     res.send('POST requests only!');
 });
 
 app.post('/api/v1', async (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
     const response = await req.body;
     try {
         await sendEmail(
