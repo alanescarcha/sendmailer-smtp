@@ -52,7 +52,7 @@ axios.post('https://sendmailer-smtp.herokuapp.com/api/v1', {
         console.log(response);
     })
     .catch(function (error) {
-        console.log(error);
+        console.error(error);
     });
 ```
 
