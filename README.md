@@ -64,11 +64,11 @@ function sendMail() {
     fetch(url, {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json' //Important, Only JSON content type!
+            'Content-Type': 'application/json' //Important, Only JSON or x-www-form-urlencoded content type!
         },
         body: JSON.stringify({
             //SMTP config
-            host: 'smtp.gmail.com', //SMTP Host server
+            host: 'smtp.gmail.com', //SMTP Host server eg. gmail
             port: '465', //SMPT Port server
             secure: 'ssl', // SSL, TLS or none (No capital letters)
             user: 'user@example.com', //SMTP User
