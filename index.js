@@ -3,9 +3,7 @@ const cors = require('cors')
 const nodemailer = require('nodemailer');
 const app = express();
 const port = process.env.PORT || 3000;
-const corsOptions = {
-    origin: '*',
-}
+
 let errorResponse = {
     "code": "400",
     "response": "Error processing the request",
@@ -83,7 +81,7 @@ app.get('/api/v1/', cors(), (req, res) => {
 });
 
 app.post('/api/v1', cors(), async (req, res) => {
-    if (req.is('application/json')) {
+    if (req.is('application/json') || req.is('application/x-www-form-urlencoded')) {
         const response = await req.body;
         try {
             await sendEmail(
@@ -128,7 +126,7 @@ app.post('/api/v1', cors(), async (req, res) => {
             console.error(`Error app.post: ${error}`);
         }
     } else {
-        res.status(400).send('Invalid content type, only JSON content type!');
+        res.status(400).send('Invalid content type, only JSON or x-www-form-urlencoded content type!');
         console.error("Message not sent, Invalid content type");
     }
 });
