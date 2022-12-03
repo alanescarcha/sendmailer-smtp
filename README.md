@@ -1,4 +1,4 @@
-# SendMailer-SMTP
+# SendMailer-SMTP 
 
 Send mails through SMTP you can use the frontend form or the API :)
 
